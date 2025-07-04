@@ -74,6 +74,10 @@ The process in itself is rather easy as it is the same repeated process, but due
  6. Repeat for each component.
  7. Plug in the 9V battery into the breadboard power supply.
 
+### Power Consumption
+
+Unfortunately, I do not have the resources, be it either equipment or time, to do a proper analysis of the usage of my system. As a whole the system, was not designed to be used over a long period of time, but rather only when im actively using my laptop at home, which usually is only in shorter time frames. Ideally, it would be powered by a 9-12V DC wall socket, as this is the maximum the breadboard power supply supports. One could lower the consumption of the sensors and servo by actually turning them off via a relay or through MOSFETS until the cooldown time has expired. This is especially relevant for the ultrasonic sensor and the servo, as they still draw current even if not actively used.
+
 ### Platform
 As previosly outlined in the Objective section, I am using a variation of the common TIG stack (T- Telegraf, I- InfluxDB, G- Grafana) that was introduced to the course. Traditionally, this method uses MQTT to transmit data, but for my project I opted to skip this step and ended up with just an IG stack, I guess. Instead, when transmitting data I use REST API through WIFI to directly send new data to InfluxDB which is later explained in more detail.
 InfluxDB is an ideal database for this project as it was designed for specifically time series data, which means that it is suitable for high write rates and timestamped data. Unfortunately, I had to learn its query language **Flux**, which is common for many database really.  As I was hosting these services on docker, it is important that it also saves data in efficient manner which InfluxDB also excels in.

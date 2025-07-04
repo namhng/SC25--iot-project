@@ -83,6 +83,52 @@ Unfortunately, I do not have the resources, be it either equipment or time, to d
 As previosly outlined in the Objective section, I am using a variation of the common TIG stack (T- Telegraf, I- InfluxDB, G- Grafana) that was introduced to the course. Traditionally, this method uses MQTT to transmit data, but for my project I opted to skip this step and ended up with just an IG stack, I guess. Instead, when transmitting data I use REST API through WIFI to directly send new data to InfluxDB which is later explained in more detail.
 InfluxDB is an ideal database for this project as it was designed for specifically time series data, which means that it is suitable for high write rates and timestamped data. Unfortunately, I had to learn its query language **Flux**, which is common for many database really.  As I was hosting these services on docker, it is important that it also saves data in efficient manner which InfluxDB also excels in.
 
+
+These services are all containerized by [Docker](https://www.docker.com/). By using the provided template of the course, I removed the Telegraf section leaving me with the following:
+
+    services:
+	  influxdb:
+	    image: influxdb:2.7
+	    container_name: influxdb
+	    ports:
+	      - "8086:8086"
+	    volumes:
+	      - influxdb_data:/var/lib/influxdb2
+	    environment:
+	      - DOCKER_INFLUXDB_INIT_MODE=setup
+	      - DOCKER_INFLUXDB_INIT_USERNAME={USER_NAME}         # THIS IS TO BE REPLACED
+	      - DOCKER_INFLUXDB_INIT_PASSWORD={PASSWORD}          # THIS IS TO BE REPLACED
+	      - DOCKER_INFLUXDB_INIT_ORG=my-org                   # THIS CAN BE CHANGED
+	      - DOCKER_INFLUXDB_INIT_BUCKET=telegraf              # THIS CAN BE CHANGED
+	      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-token   # THIS IS TO BE REPLACED
+
+
+	  grafana:
+	    image: grafana/grafana:latest
+	    container_name: grafana
+	    ports:
+	      - "3000:3000"
+	    volumes:
+	      - grafana_data:/var/lib/grafana
+	    environment:
+	      - GF_SECURITY_ADMIN_USER={GRAFANA_USER_NAME}         # THIS IS TO BE REPLACED
+	      - GF_SECURITY_ADMIN_PASSWORD={GRAFANA_PASSWORD}      # THIS IS TO BE REPLACED
+	    restart: unless-stopped
+
+	volumes:
+	  influxdb_data:
+	  grafana_data:
+
+
+
+ 1. Install Docker on your system.
+ 2. Create a new folder and a file called docker-compose.yml.
+ 3. Insert the above template into docker-compose.yml , replace the necessary values, and save.
+ 4. Start a terminal in the same folder
+ 5. run the command `docker-compose up -d`
+ 6. check the status by using `docker ps`
+By running the compose file, the necessary images should be pulled by themselves.
+
 ### The Code
 Coding as a whole is rather straightforward with some experience, as we essentially just read sensor data. Beginners should not fret though as the sensor and servo motors are well documented and reading the data itself are just a few lines of code.
 

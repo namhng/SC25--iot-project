@@ -58,10 +58,13 @@ To make the microcontroller interactable within the IDE,  the [Pymakr extension 
 Download the most recent firmware [here](https://micropython.org/download/RPI_PICO_W/). Before plugging the board into USB hold down the BOOTSEL button. This will make the Pico act like a storage device similar to a USB. Navigate to it, open it, and drop the firmware into the "folder". The board will automatically disconnect and if it does so will be ready to use afterwards.
 
 
+
 ## Putting Everything Together
 
 ### Hardware
 The process in itself is rather easy as it is the same repeated process, but due to the various components might seem daunting. As an overview, a mock diagram is shown below (uses different power board supply). Following the diagram should lead to the desired result, but here are the written out steps:
+
+![Untitled Sketch 2_bb](https://github.com/user-attachments/assets/df453b2b-7b71-4c0d-ba00-6425198238c7)
 
  1. Plug in the breadboard power supply into the breadboard so the (+) and (-) pins of the power supply aligns with the respective ones in the breadboard.
  2. Plug in the Pico in the desired position. The placement is largely preference, but some are more advantageous than others, i.e., USB slot facing away from board so it is easier to access.
@@ -351,6 +354,10 @@ The rest of the response takes values that were declared in the `keys.py`file.
 ### **Visualization**
 Set up [Grafana](https://hackmd.io/@lnu-iot/BkwDAimvn#Setting-up-Grafana), and then create a dashboard.
 	 For this project I opted to use a gauge to display the status of the content and if the dispenser needs refilling. The motion sensor values are aggregated in a per hour basis. The dashboard can be seen here:
+
+![iot_dashboard](https://github.com/user-attachments/assets/b62f3d8d-90bb-4396-b486-9e700032f9ee)
+
+  
  ### Getting the relevant data: 
  Add a new Visualization to the dashboard and make sure the data source is the name of your InfluxDB name.
 	 For the **content gauge**, the following query in Flux was used. It just fetches the data we have send and filters what was created an hour ago:
@@ -365,6 +372,7 @@ Set up [Grafana](https://hackmd.io/@lnu-iot/BkwDAimvn#Setting-up-Grafana), and t
 
 Then on the right hand side choose the Gauge Visualization, and add the desired threshold values  (if labels are wanted, add value mappings as well).
 
+![iot_gauge](https://github.com/user-attachments/assets/ed7b62f1-9a23-4371-b2fc-61e13701aab4)
 
 For the **usage statistic**, the following query was used with the bar chart visualization chosen.
 
@@ -377,13 +385,16 @@ For the **usage statistic**, the following query was used with the bar chart vis
 	  |> yield(name: "hourly_motion_count")
 It fetches the data just like before, but this time  we use `aggregateWindow` to set a per time frame we are interested in.
 
+![iot_bar](https://github.com/user-attachments/assets/8891d5e8-9a92-44b9-add1-87a99498e8c3)
 
 ## Finalizing the Design
 
 As previously alluded to in the Materials section, it is up to the creator how the dispenser itself is going to look like and what material to use. If a 3d printer is available, one can design their own dispenser. Unfortunately, for me I had no access to one and therefore opted to use very cheap materials I had at hand. Those were **plastic bottles, cardboard, rubber bands and duct tape.**
-The dispenser storage is made from a cut up plastic bottle with a hole at the top to "seat" the ultrasonic sensor. 
+The dispenser storage is made from a cut up plastic bottle with a hole at the top to "seat" the ultrasonic sensor.
 
 The servo motor uses some cardboard to control the flow of the candy:
 
+![iot_product](https://github.com/user-attachments/assets/d897ce6d-89fc-4804-8d22-03300216c3bc)
 
 All in all, I am happy with how the project turned out as it was largely just a prototype to get the hang of how hardware and software interact with each other. It was especially intriguing to experiment with the sensitivity of the sensors and reading up on their respective sensitivities and what factors, e.g., temperature, power, can influence the sensor's capabilities to work. 
+![IoT](https://github.com/user-attachments/assets/c9cdfe1c-6aa7-43e3-862c-250faa2230f1)

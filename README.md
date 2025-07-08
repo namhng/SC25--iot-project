@@ -58,6 +58,9 @@ To make the microcontroller interactable within the IDE,  the [Pymakr extension 
 ### Update microcontroller firmware
 Download the most recent firmware [here](https://micropython.org/download/RPI_PICO_W/). Before plugging the board into USB hold down the BOOTSEL button. This will make the Pico act like a storage device similar to a USB. Navigate to it, open it, and drop the firmware into the "folder". The board will automatically disconnect and if it does so will be ready to use afterwards.
 
+### Upload Code to Pico
+Plug a USB into your laptop and the microcontroller and it should be visible in the Pymakr expansion tab under the Devices tab. Connect it by hovering over it and clicking the lightning bolt symbol. From there you have two choices, either you manually upload the project code or you can toggle the development mode on which automatically uploads to the Pico whenever a change is saved in the code file.
+
 
 
 ## Putting Everything Together
@@ -366,7 +369,8 @@ While testing this code, I made use of several print statements and had my Pico 
 
 When starting the course, I was curious to learn about different connectivity methods such as LoRa and The Things Internet, but I was disappointed when I found out an additional sensor was required that costs around 150 SEK. As I already, spent a significant amount of money I opted to do a different option, which was WiFi.  It is set up once and is done, as long as the WiFi configurations don't change. As I used this project as a prototype for future expansion, WiFi is an especially good choice as there won't be anything to worry about in the future, be it handling more sizeable or complex data.
 
-This device is also intended to be used with a constant power supply since the system itself is so power hungry, there is also no concern on how often we transmit data.
+This device is also intended to be used with a constant power supply since the system itself is so power hungry, there is also no concern on how often we transmit data. 
+In this case, whenever the PIR sensor detects movement (after a cooldown period of five seconds) and every ten seconds the reading of the ultrasonic ranging module. These values can be adjusted as described above.
 
 Looking at the function that sends the data again:
 
@@ -401,6 +405,8 @@ Looking at the function that sends the data again:
 The rest of the response takes values that were declared in the `keys.py`file.
 
 ## Presenting the Data
+
+With the above described function we always save new data into the database whenever the function is called. How often the data is updated in the dashboard can be configured in Grafana.
 
 ### **Visualization**
 Set up [Grafana](https://hackmd.io/@lnu-iot/BkwDAimvn#Setting-up-Grafana), and then create a dashboard.
